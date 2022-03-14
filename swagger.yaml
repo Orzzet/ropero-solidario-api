@@ -1,0 +1,484 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Ropero solidario"
+host: "localhost:8080"
+basePath: "/v1"
+tags:
+- name: auth
+- name: orders
+- name: items
+- name: categories
+- name: users
+schemes:
+- "https"
+- "http"
+paths:
+  /auth:
+    post:
+      tags:
+        - "auth"
+      summary: "Retrieves auth token."
+      operationId: "auth"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              name:
+                type: string
+              email:
+                type: string
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            properties:
+              token:
+                type: string
+        "405":
+          description: "Validation exception"
+  /orders:
+    post:
+      tags:
+      - "orders"
+      summary: "Add a new order"
+      operationId: "addOrder"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/Order"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        "405":
+          description: "Validation exception"
+    get:
+      tags:
+        - "orders"
+      summary: "Get all orders"
+      operationId: "getOrders"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/OrderResponse"
+  /orders/{orderId}:
+    patch:
+      tags:
+        - "orders"
+      summary: "Update an existing order"
+      operationId: "updateOrder"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: orderId
+          type: integer
+          required: true
+        - in: body
+          name: "body"
+          schema:
+            $ref: "#/definitions/Order"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        "404":
+          description: "Order not found"
+        "405":
+          description: "Validation exception"
+    get:
+      tags:
+      - "orders"
+      summary: "Get order by ID"
+      operationId: "getOrder"
+      produces:
+      - "application/json"
+      parameters:
+      - in: path
+        name: orderId
+        type: integer
+        required: true
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/OrderResponse"
+        "404":
+          description: "Order not found"
+        "405":
+          description: "Validation error"
+  /items:
+    get:
+      tags:
+        - "items"
+      summary: "Get items"
+      operationId: "getItems"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ItemResponse"
+    post:
+      tags:
+        - "items"
+      summary: "Add new items"
+      operationId: "addItems"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Item"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ItemResponse"
+        "405":
+          description: "Validation error"
+    patch:
+      tags:
+        - "items"
+      summary: "Update items by id"
+      operationId: "updateItems"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: object
+              properties:
+                friendly_name:
+                  type: string
+                category_name:
+                  type: string
+                amount:
+                  type: integer
+              $ref: "#/definitions/Item"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ItemResponse"
+        "405":
+          description: "Validation error"
+  /items/{itemId}:
+    delete:
+      tags:
+        - "items"
+      summary: "Delete item"
+      operationId: "deleteItem"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: itemId
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Successful operation"
+  /categories:
+    get:
+      tags:
+        - "categories"
+      summary: "Get categories"
+      operationId: "getCategories"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CategoryResponse"
+  /categories/{categoryId}:
+    delete:
+      tags:
+        - "categories"
+      summary: "Delete category"
+      operationId: "deleteCategory"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: categoryId
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Successful operation"
+  /users:
+    post:
+      tags:
+        - "users"
+      summary: "Add a new user (not approved)"
+      operationId: "addUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/UserCreate"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/UserResponse"
+        "405":
+          description: "Validation exception"
+    get:
+      tags:
+        - "users"
+      summary: "Get all users"
+      operationId: "getUsers"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/UserResponse"
+  /users/{userId}:
+    get:
+      tags:
+        - "users"
+      summary: "Get user"
+      operationId: "getUser"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/UserResponse"
+        "405":
+          description: "Validation exception"
+    delete:
+      tags:
+        - "users"
+      summary: "Delete user"
+      operationId: "deleteUser"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Successful operation"
+        "405":
+          description: "Validation exception"
+  /users/{userId}/approve:
+    post:
+      tags:
+        - "users"
+      summary: "Approve user"
+      operationId: "approveUser"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/UserResponse"
+        "405":
+          description: "Validation exception"
+  /users/{userId}/resetPassword:
+    post:
+      tags:
+        - "users"
+      summary: "Reset user password"
+      operationId: "resetPassword"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: userId
+          type: integer
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/UserResponse"
+        "405":
+          description: "Validation exception"
+definitions:
+  Order:
+    type: object
+    properties:
+      status:
+        type: string
+        description: "Order Status"
+        enum:
+          - "requested"
+          - "completed"
+          - "discarded"
+      requester_name:
+        type: string
+      requester_phone:
+        type: string
+      items:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            amount:
+              type: integer
+  OrderResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      status_updated_on:
+        type: integer
+      status_updated_by:
+        type: object
+        $ref: "#/definitions/UserResponse"
+      created_on:
+        type: integer
+      created_by:
+        type: object
+        $ref: "#/definitions/UserResponse"
+    allOf:
+      - $ref: "#/definitions/Order"
+  Category:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      parent_category_id:
+        type: integer
+  CategoryResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+    allOf:
+      - $ref: "#/definitions/Category"
+  Item:
+    type: object
+    properties:
+      friendly_name:
+        type: string
+      category:
+        type: object
+        $ref: "#/definitions/Category"
+      amount:
+        type: integer
+  ItemResponse:
+    allOf:
+      - $ref: "#/definitions/Item"
+    type: object
+    properties:
+      id:
+        type: integer
+  User:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      role:
+        type: string
+        enum:
+          - admin
+          - superadmin
+  UserCreate:
+    allOf:
+      - $ref: "#/definitions/User"
+    properties:
+      password:
+        type: string
+  UserResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+      is_approved:
+        type: boolean
+    allOf:
+      - $ref: "#/definitions/User"
