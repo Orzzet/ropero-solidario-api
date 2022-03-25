@@ -2,7 +2,7 @@ swagger: "2.0"
 info:
   version: "1.0.0"
   title: "Ropero solidario"
-host: "localhost:8080"
+host: "34.83.143.73:8850"
 basePath: "/v1"
 tags:
 - name: auth
@@ -14,6 +14,19 @@ schemes:
 - "https"
 - "http"
 paths:
+  /health:
+    get:
+      tags:
+        - "health"
+      summary: "Check if api is Online."
+      operationId: "health"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Successful operation"
   /auth:
     post:
       tags:
