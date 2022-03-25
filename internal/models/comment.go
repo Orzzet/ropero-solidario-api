@@ -5,10 +5,6 @@ import (
 	"time"
 )
 
-type Service struct {
-	DB *gorm.DB
-}
-
 type Comment struct {
 	gorm.Model
 	Slug    string `json:"slug"`
@@ -23,12 +19,6 @@ type CommentService interface {
 	UpdateComment(ID uint, newComment Comment) (Comment, error)
 	DeleteComment(ID uint) error
 	GetAllComments() ([]Comment, error)
-}
-
-func NewService(db *gorm.DB) *Service {
-	return &Service{
-		DB: db,
-	}
 }
 
 // GetComment - retrieves comments by their ID from the database
