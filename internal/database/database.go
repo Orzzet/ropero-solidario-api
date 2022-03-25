@@ -10,7 +10,7 @@ import (
 )
 
 func NewDatabase() (db *gorm.DB, err error) {
-	err = godotenv.Load("../../.env")
+	err = godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading.env")
 	}
