@@ -21,6 +21,7 @@ type UserService interface {
 	GetUserHashedPassword(email string) (string, error)
 }
 
+// CreateUser -
 func (s *Service) CreateUser(user User) (User, error) {
 	if result := s.DB.Save(&user); result.Error != nil {
 		return User{}, result.Error

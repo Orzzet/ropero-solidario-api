@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"fmt"
 	"github.com/orzzet/ropero-solidario-api/internal/database"
-	"github.com/orzzet/ropero-solidario-api/internal/models"
 	transportHTTP "github.com/orzzet/ropero-solidario-api/internal/transport/http"
 	"math/big"
 	"net/http"
@@ -28,7 +27,6 @@ func (app *App) Run() error {
 	if err != nil {
 		return err
 	}
-	modelsService := models.NewService(db)
 
 	secret, err := GenerateRandomString(10)
 
@@ -38,7 +36,7 @@ func (app *App) Run() error {
 		return err
 	}
 
-	handler := transportHTTP.NewHandler(modelsService, secret)
+	handler := transportHTTP.NewHandler(db, secret)
 	handler.SetupRoutes()
 
 	if err := http.ListenAndServe(":8850", handler.Router); err != nil {
