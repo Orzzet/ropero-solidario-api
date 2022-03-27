@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
-	usermodel "github.com/orzzet/ropero-solidario-api/src/user"
+	"github.com/orzzet/ropero-solidario-api/src/services"
 	"net/http"
 )
 
@@ -13,7 +13,7 @@ import (
 type Handler struct {
 	Secret string
 	Router *mux.Router
-	*usermodel.UserService
+	*services.Service
 }
 
 type Response struct {
@@ -23,8 +23,8 @@ type Response struct {
 // NewHandler - returns a pointer to a Handler
 func NewHandler(db *gorm.DB, secret string) *Handler {
 	return &Handler{
-		Secret:      secret,
-		UserService: usermodel.NewService(db),
+		Secret:  secret,
+		Service: services.NewService(db),
 	}
 }
 

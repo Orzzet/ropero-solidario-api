@@ -2,7 +2,7 @@ package database
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/orzzet/ropero-solidario-api/internal/models"
+	"github.com/orzzet/ropero-solidario-api/src/models"
 )
 
 // MigrateDB migrates DB and creates tables

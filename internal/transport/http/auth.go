@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/golang-jwt/jwt"
-	"github.com/orzzet/ropero-solidario-api/internal/models"
+	"github.com/orzzet/ropero-solidario-api/src/models"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"time"
@@ -17,7 +17,7 @@ func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, err.Error())
 	}
 
-	hashedPassword, err := h.UserService.GetUserHashedPassword(credentials.Email)
+	hashedPassword, err := h.Service.GetUserHashedPassword(credentials.Email)
 
 	if err != nil {
 		// If there is an issue with the database, return a 500 error

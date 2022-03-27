@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	usermodel "github.com/orzzet/ropero-solidario-api/src/user"
+	"github.com/orzzet/ropero-solidario-api/src/models"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strconv"
@@ -12,7 +12,7 @@ import (
 
 func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var user usermodel.User
+	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
@@ -20,7 +20,7 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	user.IsApproved = false
 	user.Password = string(hashedPassword)
 
-	user, err = h.UserService.CreateUser(user)
+	user, err = h.Service.CreateUser(user)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 		w.WriteHeader(http.StatusInternalServerError)
@@ -33,13 +33,13 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) ApproveUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var user usermodel.User
+	var user models.User
 	vars := mux.Vars(r)
 	id, err := strconv.ParseUint(vars["userId"], 10, 32)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
-	user, err = h.UserService.ApproveUser(uint(id))
+	user, err = h.Service.ApproveUser(uint(id))
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
