@@ -4,29 +4,37 @@ import (
 	"github.com/orzzet/ropero-solidario-api/src/models"
 )
 
-func (s *Service) CreateUser(user models.User) (models.User, error) {
-	if result := s.DB.Save(&user); result.Error != nil {
-		return models.User{}, result.Error
+func (s *Service) CreateUser(user models.User) (models.UserOutput, error) {
+	userInput, err := user.FormatInput()
+	if err != nil {
+		return models.UserOutput{}, err
 	}
-	return user, nil
+	if result := s.DB.Save(&userInput); result.Error != nil {
+		return models.UserOutput{}, result.Error
+	}
+	newUser, err := s.GetUser(userInput.ID)
+	if err != nil {
+		return models.UserOutput{}, err
+	}
+	return newUser, nil
 }
 
-func (s *Service) GetUser(ID uint) (models.User, error) {
+func (s *Service) GetUser(ID uint) (models.UserOutput, error) {
 	var user models.User
 	if result := s.DB.First(&user, ID); result.Error != nil {
-		return models.User{}, result.Error
+		return models.UserOutput{}, result.Error
 	}
-	return user, nil
+	return user.FormatOutput(), nil
 }
 
-func (s *Service) ApproveUser(ID uint) (models.User, error) {
+func (s *Service) ApproveUser(ID uint) (models.UserOutput, error) {
 	user, err := s.GetUser(ID)
 	if err != nil {
-		return models.User{}, err
+		return models.UserOutput{}, err
 	}
 	user.IsApproved = true
 	if result := s.DB.Model(&user).Updates(user); result.Error != nil {
-		return models.User{}, result.Error
+		return models.UserOutput{}, result.Error
 	}
 	return user, nil
 }

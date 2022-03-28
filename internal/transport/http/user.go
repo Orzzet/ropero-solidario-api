@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/orzzet/ropero-solidario-api/src/models"
-	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strconv"
 )
@@ -16,34 +15,29 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 8)
-	user.IsApproved = false
-	user.Password = string(hashedPassword)
 
-	user, err = h.Service.CreateUser(user)
+	newUser, err := h.Service.CreateUser(user)
 	if err != nil {
-		fmt.Fprintf(w, err.Error())
-		w.WriteHeader(http.StatusInternalServerError)
+		h.ThrowError(w, err)
 		return
 	}
-	if err := json.NewEncoder(w).Encode(user); err != nil {
+	if err := json.NewEncoder(w).Encode(newUser); err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
 }
 
 func (h *Handler) ApproveUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var user models.User
 	vars := mux.Vars(r)
 	id, err := strconv.ParseUint(vars["userId"], 10, 32)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
-	user, err = h.Service.ApproveUser(uint(id))
+	newUser, err := h.Service.ApproveUser(uint(id))
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
-	if err := json.NewEncoder(w).Encode(user); err != nil {
+	if err := json.NewEncoder(w).Encode(newUser); err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
 }

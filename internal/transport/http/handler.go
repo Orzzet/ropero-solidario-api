@@ -3,6 +3,7 @@ package http
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/go-playground/validator/v10"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"github.com/orzzet/ropero-solidario-api/src/services"
@@ -42,4 +43,15 @@ func (h *Handler) SetupRoutes() {
 			panic(err)
 		}
 	})
+}
+
+func (h *Handler) ThrowError(w http.ResponseWriter, err error) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusForbidden)
+	validationErrors := make(map[string]string)
+	for _, valErr := range err.(validator.ValidationErrors) {
+		validationErrors[valErr.Field()] = valErr.Tag()
+	}
+	formattedValidationErrors, _ := json.Marshal(validationErrors)
+	w.Write(formattedValidationErrors)
 }
