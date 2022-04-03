@@ -67,6 +67,11 @@ paths:
       produces:
       - "application/json"
       parameters:
+      - in: header
+        name: Authorization
+        type: string
+        required: true
+        default: Bearer {token}
       - in: body
         name: body
         required: true
@@ -86,6 +91,12 @@ paths:
       operationId: "getOrders"
       produces:
         - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
       responses:
         "200":
           description: "Successful operation"
@@ -104,6 +115,11 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: path
           name: orderId
           type: integer
@@ -129,10 +145,15 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - in: path
-        name: orderId
-        type: integer
-        required: true
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: path
+          name: orderId
+          type: integer
+          required: true
       responses:
         "200":
           description: "Successful operation"
@@ -152,6 +173,12 @@ paths:
         - "application/json"
       produces:
         - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
       responses:
         "200":
           description: "Successful operation"
@@ -159,16 +186,22 @@ paths:
             type: array
             items:
               $ref: "#/definitions/ItemResponse"
+  /items/bulk:
     post:
       tags:
         - "items"
-      summary: "Add new items"
+      summary: "Add new items in bulk"
       operationId: "addItems"
       consumes:
         - "application/json"
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: "body"
           name: "body"
           required: true
@@ -188,13 +221,18 @@ paths:
     patch:
       tags:
         - "items"
-      summary: "Update items by id"
+      summary: "Update items by id in bulk (additionalProp is id in int)"
       operationId: "updateItems"
       consumes:
         - "application/json"
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: "body"
           name: "body"
           required: true
@@ -230,6 +268,11 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: path
           name: itemId
           type: integer
@@ -247,6 +290,12 @@ paths:
         - "application/json"
       produces:
         - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
       responses:
         "200":
           description: "Successful operation"
@@ -254,6 +303,38 @@ paths:
             type: array
             items:
               $ref: "#/definitions/CategoryResponse"
+  /categories/bulk:
+    post:
+      tags:
+        - "categories"
+      summary: "Add new categories"
+      operationId: "addCategories"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Category"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CategoryResponse"
+        "405":
+          description: "Validation error"
   /categories/{categoryId}:
     delete:
       tags:
@@ -265,6 +346,11 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: path
           name: categoryId
           type: integer
@@ -283,6 +369,11 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: "body"
           name: "body"
           required: true
@@ -302,6 +393,12 @@ paths:
       operationId: "getUsers"
       produces:
         - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
       responses:
         "200":
           description: "Successful operation"
@@ -318,6 +415,11 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: path
           name: userId
           type: integer
@@ -337,6 +439,11 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: path
           name: userId
           type: integer
@@ -355,6 +462,11 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: path
           name: userId
           type: integer
@@ -375,6 +487,11 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
         - in: path
           name: userId
           type: integer
@@ -438,8 +555,6 @@ definitions:
   Category:
     type: object
     properties:
-      id:
-        type: integer
       name:
         type: string
       parent_category_id:
@@ -457,8 +572,7 @@ definitions:
       friendly_name:
         type: string
       category:
-        type: object
-        $ref: "#/definitions/Category"
+        type: integer
       amount:
         type: integer
   ItemResponse:
