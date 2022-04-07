@@ -14,11 +14,11 @@ type User struct {
 }
 
 type UserOutput struct {
-	ID         uint
-	Name       string
-	Email      string
-	Role       string
-	IsApproved bool
+	ID         uint   `json:"id"`
+	Name       string `json:"name"`
+	Email      string `json:"email"`
+	Role       string `json:"role"`
+	IsApproved bool   `json:"isApproved"`
 }
 
 func (u User) MarshalJSON() ([]byte, error) {

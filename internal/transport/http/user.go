@@ -106,7 +106,7 @@ func (h *Handler) resetUserPassword(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusForbidden)
 		w.Write([]byte("Invalid userId"))
 	}
-	data, validations := validators.CreateUser(r)
+	data, validations := validators.ResetPassword(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return

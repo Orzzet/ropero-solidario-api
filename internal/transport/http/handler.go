@@ -34,6 +34,12 @@ func (h *Handler) SetupRoutes() {
 	h.Router = mux.NewRouter()
 
 	h.Router.HandleFunc("/auth", h.createToken).Methods("POST")
+	
+	// Categories
+	h.Router.HandleFunc("/categories", h.getCategories).Methods("GET")
+	h.Router.HandleFunc("/categories/bulk", h.createCategories).Methods("POST")
+	h.Router.HandleFunc("/delete/{categoryId}", h.deleteCategory).Methods("DELETE")
+
 	// Users
 	h.Router.HandleFunc("/users", h.createUser).Methods("POST")
 	h.Router.HandleFunc("/users", h.getUsers).Methods("GET")
