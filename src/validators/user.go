@@ -14,9 +14,3 @@ func CreateUser(r *http.Request) (data map[string]interface{}, validation url.Va
 		"role":     []string{"in:admin,superadmin"},
 	}, r)
 }
-
-func ApproveUser(r *http.Request) (data map[string]interface{}, validation url.Values) {
-	return Validate(govalidator.MapData{
-		"userId": []string{"required", "numeric", "min:1"},
-	}, r)
-}

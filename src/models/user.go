@@ -14,12 +14,6 @@ type User struct {
 	Password   string
 }
 
-type UserInput struct {
-	Name     string
-	Email    string
-	Password string
-}
-
 type UserOutput struct {
 	gorm.Model
 	Name       string

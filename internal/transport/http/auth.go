@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/golang-jwt/jwt"
-	"github.com/orzzet/ropero-solidario-api/src/models"
+	"github.com/orzzet/ropero-solidario-api/src/validators"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strings"
@@ -14,14 +14,14 @@ import (
 
 func (h *Handler) createToken(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	var credentials models.Credentials
-	if err := json.NewDecoder(r.Body).Decode(&credentials); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(err.Error()))
+	data, validations := validators.CreateToken(r)
+	if validations != nil {
+		throwValidationError(w, validations)
+		return
 	}
-
-	hashedPassword, err := h.Service.GetUserHashedPassword(credentials.Email)
-
+	email := data["email"].(string)
+	password := data["password"].(string)
+	hashedPassword, err := h.Service.GetUserHashedPassword(email)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(err.Error()))
@@ -29,7 +29,7 @@ func (h *Handler) createToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Compare the stored hashed password, with the hashed version of the password that was received
-	if err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(credentials.Password)); err != nil {
+	if err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)); err != nil {
 		// If the two passwords don't match, return a 401 status
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(err.Error()))
@@ -37,7 +37,7 @@ func (h *Handler) createToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email":        credentials.Email,
+		"email":        email,
 		"creationDate": time.Now().Unix(),
 	})
 	// Sign and get the complete encoded token as a string using the secret
