@@ -34,10 +34,10 @@ func (h *Handler) SetupRoutes() {
 	fmt.Println("Setting up routes")
 	h.Router = mux.NewRouter()
 
-	h.Router.HandleFunc("/auth", h.CreateToken).Methods("POST")
-	h.Router.HandleFunc("/users", h.CreateUser).Methods("POST")
-	h.Router.HandleFunc("/users", h.GetUsers).Methods("GET")
-	h.Router.HandleFunc("/users/{userId}/approve", h.ApproveUser).Methods("POST")
+	h.Router.HandleFunc("/auth", h.createToken).Methods("POST")
+	h.Router.HandleFunc("/users", h.createUser).Methods("POST")
+	h.Router.HandleFunc("/users", h.getUsers).Methods("GET")
+	h.Router.HandleFunc("/users/{userId}/approve", h.approveUser).Methods("POST")
 	h.Router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if err := json.NewEncoder(w).Encode(Response{Message: "Online"}); err != nil {

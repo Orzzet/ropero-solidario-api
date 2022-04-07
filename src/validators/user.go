@@ -6,23 +6,17 @@ import (
 	"net/url"
 )
 
-func CreateUser(r *http.Request) (map[string]interface{}, url.Values) {
-	rules := govalidator.MapData{
+func CreateUser(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return Validate(govalidator.MapData{
 		"name":     []string{"required", "alpha_space"},
 		"email":    []string{"required", "email"},
 		"password": []string{"required"},
 		"role":     []string{"in:admin,superadmin"},
-	}
-	data := make(map[string]interface{}, 0)
-	opts := govalidator.Options{
-		Request: r,
-		Rules:   rules,
-		Data:    &data,
-	}
-	validator := govalidator.New(opts)
-	validation := validator.ValidateJSON()
-	if len(validation) > 0 {
-		return data, validation
-	}
-	return data, nil
+	}, r)
+}
+
+func ApproveUser(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return Validate(govalidator.MapData{
+		"userId": []string{"required", "numeric", "min:1"},
+	}, r)
 }

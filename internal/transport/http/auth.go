@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-func (h *Handler) CreateToken(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) createToken(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var credentials models.Credentials
 	if err := json.NewDecoder(r.Body).Decode(&credentials); err != nil {

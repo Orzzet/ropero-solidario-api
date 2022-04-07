@@ -2,7 +2,6 @@ package http
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/orzzet/ropero-solidario-api/src/models"
 	"github.com/orzzet/ropero-solidario-api/src/validators"
@@ -10,51 +9,55 @@ import (
 	"strconv"
 )
 
-func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) createUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	data, validations := validators.CreateUser(r)
 	if validations != nil {
-		json.NewEncoder(w).Encode(validations)
+		throwValidationError(w, validations)
 		return
 	}
 
 	newUser, err := h.Service.CreateUser(data)
 	if err != nil {
-		h.ThrowError(w, err)
+		throwInternalError(w, err)
 		return
 	}
 	if err := json.NewEncoder(w).Encode(newUser); err != nil {
-		fmt.Fprintf(w, err.Error())
+		throwInternalError(w, err)
 		return
 	}
 }
 
-func (h *Handler) GetUsers(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) getUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var users []models.User
 
 	users, err := h.Service.GetUsers()
 	if err != nil {
-		h.ThrowError(w, err)
+		throwInternalError(w, err)
 		return
 	}
 	if err := json.NewEncoder(w).Encode(users); err != nil {
-		fmt.Fprintf(w, err.Error())
+		throwInternalError(w, err)
 	}
 }
 
-func (h *Handler) ApproveUser(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) approveUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
 	id, err := strconv.ParseUint(vars["userId"], 10, 32)
 	if err != nil {
-		fmt.Fprintf(w, err.Error())
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte("Invalid userId"))
 	}
 	newUser, err := h.Service.ApproveUser(uint(id))
 	if err != nil {
-		fmt.Fprintf(w, err.Error())
+		w.WriteHeader(http.StatusNotFound)
+		w.Write([]byte("User not found"))
+		return
 	}
 	if err := json.NewEncoder(w).Encode(newUser); err != nil {
-		fmt.Fprintf(w, err.Error())
+		throwInternalError(w, err)
+		return
 	}
 }
