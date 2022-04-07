@@ -2,11 +2,10 @@ package models
 
 import (
 	"encoding/json"
-	"github.com/jinzhu/gorm"
 )
 
 type User struct {
-	gorm.Model
+	ID         uint
 	Name       string
 	Email      string
 	Role       string
@@ -15,7 +14,7 @@ type User struct {
 }
 
 type UserOutput struct {
-	gorm.Model
+	ID         uint
 	Name       string
 	Email      string
 	Role       string
@@ -24,7 +23,7 @@ type UserOutput struct {
 
 func (u User) MarshalJSON() ([]byte, error) {
 	userOutput := UserOutput{
-		Model:      u.Model,
+		ID:         u.ID,
 		Name:       u.Name,
 		Email:      u.Email,
 		Role:       u.Role,

@@ -58,3 +58,25 @@ func (s *Service) GetUserHashedPassword(email string) (string, error) {
 	}
 	return user.Password, nil
 }
+
+func (s *Service) DeleteUser(ID uint) error {
+	user := models.User{
+		ID: ID,
+	}
+	if result := s.DB.Delete(&user).Updates(user); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
+
+func (s *Service) ResetPassword(ID uint, password string) (models.User, error) {
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), 8)
+	user := models.User{
+		ID:       ID,
+		Password: string(hashedPassword),
+	}
+	if result := s.DB.Model(&user).Updates(user); result.Error != nil {
+		return models.User{}, result.Error
+	}
+	return user, nil
+}

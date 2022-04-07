@@ -14,3 +14,9 @@ func CreateUser(r *http.Request) (data map[string]interface{}, validation url.Va
 		"role":     []string{"in:admin,superadmin"},
 	}, r)
 }
+
+func ResetPassword(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return Validate(govalidator.MapData{
+		"password": []string{"required", "min:6"},
+	}, r)
+}
