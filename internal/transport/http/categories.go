@@ -15,7 +15,6 @@ func (h *Handler) createCategories(w http.ResponseWriter, r *http.Request) {
 		throwValidationError(w, validations)
 		return
 	}
-
 	newCategories, err := h.Service.CreateCategories(data)
 	if err != nil {
 		throwInternalError(w, err)

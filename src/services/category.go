@@ -12,18 +12,20 @@ func (s *Service) GetCategories() (categories []models.Category, err error) {
 }
 
 func (s *Service) CreateCategories(data map[string]interface{}) ([]models.Category, error) {
-	categoriesData := data["categories"].([]map[string]interface{})
-	categories := make([]models.Category, len(categoriesData))
+	categoriesData := data["categories"].([]interface{})
+	//categories := make([]models.Category, len(categoriesData))
 	for _, category := range categoriesData {
-		categories = append(categories, models.Category{
-			Name:             category["name"].(string),
-			ParentCategoryID: category["parentCategoryId"].(uint),
-		})
+		categoryData := category.(map[string]interface{})
+		category := models.Category{
+			Name:             categoryData["name"].(string),
+			ParentCategoryID: uint(categoryData["parentCategoryId"].(float64)),
+		}
+		//categories[i] = category
+		if result := s.DB.Create(&category); result.Error != nil {
+			return []models.Category{}, result.Error
+		}
 	}
-	if result := s.DB.Save(&categories); result.Error != nil {
-		return []models.Category{}, result.Error
-	}
-	return categories, nil
+	return s.GetCategories()
 }
 
 func (s *Service) DeleteCategory(ID uint) error {

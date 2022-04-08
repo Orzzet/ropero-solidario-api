@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/orzzet/ropero-solidario-api/internal/database"
 	transportHTTP "github.com/orzzet/ropero-solidario-api/internal/transport/http"
+	"github.com/orzzet/ropero-solidario-api/src/validators"
 	"math/big"
 	"net/http"
 )
@@ -39,6 +40,8 @@ func (app *App) Run() error {
 	handler := transportHTTP.NewHandler(db, secret)
 	handler.SetupRoutes()
 
+	validators.Init()
+	
 	if err := http.ListenAndServe(":8850", handler.Router); err != nil {
 		fmt.Println("Failed to set up server")
 		return err

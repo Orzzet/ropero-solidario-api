@@ -6,6 +6,10 @@ import (
 	"net/url"
 )
 
+func Init() {
+	govalidator.AddCustomRule("categories", validateCategories)
+}
+
 func Validate(rules govalidator.MapData, r *http.Request) (data map[string]interface{}, validation url.Values) {
 	validator := govalidator.New(govalidator.Options{
 		Request: r,

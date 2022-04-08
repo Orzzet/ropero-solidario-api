@@ -10,5 +10,8 @@ func MigrateDB(db *gorm.DB) error {
 	if result := db.AutoMigrate(&models.User{}); result.Error != nil {
 		return result.Error
 	}
+	if result := db.AutoMigrate(&models.Category{}); result.Error != nil {
+		return result.Error
+	}
 	return nil
 }
