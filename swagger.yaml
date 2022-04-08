@@ -3,7 +3,6 @@ info:
   version: "1.0.0"
   title: "Ropero solidario"
 host: "34.83.143.73:8850"
-basePath: "/v1"
 tags:
 - name: auth
 - name: orders
@@ -11,7 +10,6 @@ tags:
 - name: categories
 - name: users
 schemes:
-- "https"
 - "http"
 paths:
   /health:
