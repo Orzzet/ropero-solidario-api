@@ -54,7 +54,7 @@ func (h *Handler) createToken(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handler) Auth(next http.HandlerFunc) http.HandlerFunc {
+func (h *Handler) auth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		authHeader := strings.Split(r.Header.Get("Authorization"), "Bearer ")
 		if len(authHeader) != 2 {

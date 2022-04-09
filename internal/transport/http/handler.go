@@ -36,7 +36,7 @@ func (h *Handler) SetupRoutes() {
 	h.Router.HandleFunc("/auth", h.createToken).Methods("POST", "OPTIONS")
 
 	// Categories
-	h.Router.HandleFunc("/categories", h.getCategories).Methods("GET", "OPTIONS")
+	h.Router.HandleFunc("/categories", h.auth(h.getCategories)).Methods("GET", "OPTIONS")
 	h.Router.HandleFunc("/categories/bulk", h.createCategories).Methods("POST", "OPTIONS")
 	h.Router.HandleFunc("/delete/{categoryId}", h.deleteCategory).Methods("DELETE", "OPTIONS")
 
