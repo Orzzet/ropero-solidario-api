@@ -32,25 +32,39 @@ func NewHandler(db *gorm.DB, secret string) *Handler {
 func (h *Handler) SetupRoutes() {
 	fmt.Println("Setting up routes")
 	h.Router = mux.NewRouter()
-
+	h.Router.Use(cors)
 	h.Router.HandleFunc("/auth", h.createToken).Methods("POST", "OPTIONS")
 
 	// Categories
-	h.Router.HandleFunc("/categories", h.getCategories).Methods("GET")
-	h.Router.HandleFunc("/categories/bulk", h.createCategories).Methods("POST")
-	h.Router.HandleFunc("/delete/{categoryId}", h.deleteCategory).Methods("DELETE")
+	h.Router.HandleFunc("/categories", h.getCategories).Methods("GET", "OPTIONS")
+	h.Router.HandleFunc("/categories/bulk", h.createCategories).Methods("POST", "OPTIONS")
+	h.Router.HandleFunc("/delete/{categoryId}", h.deleteCategory).Methods("DELETE", "OPTIONS")
 
 	// Users
-	h.Router.HandleFunc("/users", h.createUser).Methods("POST")
-	h.Router.HandleFunc("/users", h.getUsers).Methods("GET")
-	h.Router.HandleFunc("/users/{userId}", h.getUser).Methods("GET")
-	h.Router.HandleFunc("/users/{userId}", h.deleteUser).Methods("DELETE")
-	h.Router.HandleFunc("/users/{userId}/approve", h.approveUser).Methods("POST")
-	h.Router.HandleFunc("/users/{userId}/resetPassword", h.resetUserPassword).Methods("POST")
+	h.Router.HandleFunc("/users", h.createUser).Methods("POST", "OPTIONS")
+	h.Router.HandleFunc("/users", h.getUsers).Methods("GET", "OPTIONS")
+	h.Router.HandleFunc("/users/{userId}", h.getUser).Methods("GET", "OPTIONS")
+	h.Router.HandleFunc("/users/{userId}", h.deleteUser).Methods("DELETE", "OPTIONS")
+	h.Router.HandleFunc("/users/{userId}/approve", h.approveUser).Methods("POST", "OPTIONS")
+	h.Router.HandleFunc("/users/{userId}/resetPassword", h.resetUserPassword).Methods("POST", "OPTIONS")
 	h.Router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if err := json.NewEncoder(w).Encode(Response{Message: "Online"}); err != nil {
 			panic(err)
 		}
+	})
+}
+
+func cors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "*")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+		next.ServeHTTP(w, r)
+		return
 	})
 }
