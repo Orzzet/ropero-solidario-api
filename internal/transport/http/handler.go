@@ -33,8 +33,8 @@ func (h *Handler) SetupRoutes() {
 	fmt.Println("Setting up routes")
 	h.Router = mux.NewRouter()
 
-	h.Router.HandleFunc("/auth", h.createToken).Methods("POST")
-	
+	h.Router.HandleFunc("/auth", h.createToken).Methods("POST", "OPTIONS")
+
 	// Categories
 	h.Router.HandleFunc("/categories", h.getCategories).Methods("GET")
 	h.Router.HandleFunc("/categories/bulk", h.createCategories).Methods("POST")
