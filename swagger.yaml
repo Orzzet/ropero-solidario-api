@@ -106,7 +106,7 @@ paths:
     patch:
       tags:
         - "orders"
-      summary: "Update an existing order"
+      summary: "Edit an existing order"
       operationId: "updateOrder"
       consumes:
         - "application/json"
@@ -184,6 +184,36 @@ paths:
             type: array
             items:
               $ref: "#/definitions/ItemResponse"
+    post:
+      tags:
+        - "items"
+      summary: "Add a new item"
+      operationId: "createItem"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            $ref: "#/definitions/Item"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ItemResponse"
+        "405":
+          description: "Validation error"
   /items/bulk:
     post:
       tags:
@@ -222,7 +252,7 @@ paths:
     patch:
       tags:
         - "items"
-      summary: "Update items in bulk"
+      summary: "Edit items in bulk"
       operationId: "updateItems"
       consumes:
         - "application/json"
@@ -255,6 +285,40 @@ paths:
         "405":
           description: "Validation error"
   /items/{itemId}:
+    put:
+      tags:
+        - "items"
+      summary: "Edit items in bulk"
+      operationId: "updateItems"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: path
+          name: itemId
+          type: integer
+          required: true
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            $ref: "#/definitions/Item"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ItemResponse"
+        "405":
+          description: "Validation error"
     delete:
       tags:
         - "items"
@@ -300,6 +364,34 @@ paths:
             type: array
             items:
               $ref: "#/definitions/CategoryResponse"
+    post:
+      tags:
+        - "categories"
+      summary: "Add a new category"
+      operationId: "addCategory"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            $ref: "#/definitions/Category"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/CategoryResponse"
   /categories/bulk:
     post:
       tags:
@@ -338,7 +430,7 @@ paths:
     patch:
       tags:
         - "categories"
-      summary: "Update categories in bulk"
+      summary: "Edit categories in bulk"
       operationId: "updateCategories"
       consumes:
         - "application/json"
@@ -370,6 +462,34 @@ paths:
         "405":
           description: "Validation error"
   /categories/{categoryId}:
+    put:
+      tags:
+        - "categories"
+      summary: "Edit a category"
+      operationId: "editCategory"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: path
+          name: categoryId
+          type: integer
+          required: true
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            $ref: "#/definitions/Category"
+      responses:
+        "200":
+          description: "Successful operation"
     delete:
       tags:
         - "categories"
