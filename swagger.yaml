@@ -214,6 +214,63 @@ paths:
               $ref: "#/definitions/ItemResponse"
         "405":
           description: "Validation error"
+  /items/{itemId}:
+    put:
+      tags:
+        - "items"
+      summary: "Edit items in bulk"
+      operationId: "updateItems"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: path
+          name: itemId
+          type: integer
+          required: true
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            $ref: "#/definitions/Item"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ItemResponse"
+        "405":
+          description: "Validation error"
+    delete:
+      tags:
+        - "items"
+      summary: "Delete item"
+      operationId: "deleteItem"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: path
+          name: itemId
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Successful operation"
   /items/bulk:
     post:
       tags:
@@ -284,63 +341,6 @@ paths:
               $ref: "#/definitions/ItemResponse"
         "405":
           description: "Validation error"
-  /items/{itemId}:
-    put:
-      tags:
-        - "items"
-      summary: "Edit items in bulk"
-      operationId: "updateItems"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: header
-          name: Authorization
-          type: string
-          required: true
-          default: Bearer {token}
-        - in: path
-          name: itemId
-          type: integer
-          required: true
-        - in: "body"
-          name: "body"
-          required: true
-          schema:
-            type: object
-            $ref: "#/definitions/Item"
-      responses:
-        "200":
-          description: "Successful operation"
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/ItemResponse"
-        "405":
-          description: "Validation error"
-    delete:
-      tags:
-        - "items"
-      summary: "Delete item"
-      operationId: "deleteItem"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: header
-          name: Authorization
-          type: string
-          required: true
-          default: Bearer {token}
-        - in: path
-          name: itemId
-          type: integer
-          required: true
-      responses:
-        "200":
-          description: "Successful operation"
   /categories:
     get:
       tags:
@@ -392,6 +392,57 @@ paths:
             type: array
             items:
               $ref: "#/definitions/CategoryResponse"
+  /categories/{categoryId}:
+    put:
+      tags:
+        - "categories"
+      summary: "Edit a category"
+      operationId: "editCategory"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: path
+          name: categoryId
+          type: integer
+          required: true
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            $ref: "#/definitions/Category"
+      responses:
+        "200":
+          description: "Successful operation"
+    delete:
+      tags:
+        - "categories"
+      summary: "[Implemented] Delete category"
+      operationId: "deleteCategory"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: path
+          name: categoryId
+          type: integer
+          required: true
+      responses:
+        "200":
+          description: "Successful operation"
   /categories/bulk:
     post:
       tags:
@@ -461,57 +512,6 @@ paths:
               $ref: "#/definitions/CategoryResponse"
         "405":
           description: "Validation error"
-  /categories/{categoryId}:
-    put:
-      tags:
-        - "categories"
-      summary: "Edit a category"
-      operationId: "editCategory"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: header
-          name: Authorization
-          type: string
-          required: true
-          default: Bearer {token}
-        - in: path
-          name: categoryId
-          type: integer
-          required: true
-        - in: "body"
-          name: "body"
-          required: true
-          schema:
-            type: object
-            $ref: "#/definitions/Category"
-      responses:
-        "200":
-          description: "Successful operation"
-    delete:
-      tags:
-        - "categories"
-      summary: "[Implemented] Delete category"
-      operationId: "deleteCategory"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - in: header
-          name: Authorization
-          type: string
-          required: true
-          default: Bearer {token}
-        - in: path
-          name: categoryId
-          type: integer
-          required: true
-      responses:
-        "200":
-          description: "Successful operation"
   /users:
     post:
       tags:
