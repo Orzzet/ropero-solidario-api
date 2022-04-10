@@ -38,7 +38,7 @@ func (h *Handler) SetupRoutes() {
 	// Categories
 	h.Router.HandleFunc("/categories", h.auth(h.getCategories)).Methods("GET", "OPTIONS")
 	h.Router.HandleFunc("/categories/bulk", h.createCategories).Methods("POST", "OPTIONS")
-	h.Router.HandleFunc("/delete/{categoryId}", h.deleteCategory).Methods("DELETE", "OPTIONS")
+	h.Router.HandleFunc("/categories/{categoryId}", h.deleteCategory).Methods("DELETE", "OPTIONS")
 
 	// Users
 	h.Router.HandleFunc("/users", h.createUser).Methods("POST", "OPTIONS")
@@ -47,6 +47,8 @@ func (h *Handler) SetupRoutes() {
 	h.Router.HandleFunc("/users/{userId}", h.deleteUser).Methods("DELETE", "OPTIONS")
 	h.Router.HandleFunc("/users/{userId}/approve", h.approveUser).Methods("POST", "OPTIONS")
 	h.Router.HandleFunc("/users/{userId}/resetPassword", h.resetUserPassword).Methods("POST", "OPTIONS")
+
+	// Health check
 	h.Router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if err := json.NewEncoder(w).Encode(Response{Message: "Online"}); err != nil {

@@ -16,7 +16,7 @@ paths:
     get:
       tags:
         - "health"
-      summary: "Check if api is Online."
+      summary: "[Implemented] Check if api is Online."
       operationId: "health"
       consumes:
         - "application/json"
@@ -29,7 +29,7 @@ paths:
     post:
       tags:
         - "auth"
-      summary: "Retrieves auth token."
+      summary: "[Implemented] Retrieves auth token."
       operationId: "auth"
       consumes:
         - "application/json"
@@ -282,7 +282,7 @@ paths:
     get:
       tags:
         - "categories"
-      summary: "Get categories"
+      summary: "[Implemented] [Auth] Get categories"
       operationId: "getCategories"
       consumes:
         - "application/json"
@@ -305,7 +305,7 @@ paths:
     post:
       tags:
         - "categories"
-      summary: "Add new categories"
+      summary: "[Implemented] Add new categories"
       operationId: "addCategories"
       consumes:
         - "application/json"
@@ -337,7 +337,7 @@ paths:
     delete:
       tags:
         - "categories"
-      summary: "Delete category"
+      summary: "[Implemented] Delete category"
       operationId: "deleteCategory"
       consumes:
         - "application/json"
@@ -360,7 +360,7 @@ paths:
     post:
       tags:
         - "users"
-      summary: "Add a new user (not approved)"
+      summary: "[Implemented] Add a new user (not approved)"
       operationId: "addUser"
       consumes:
         - "application/json"
@@ -387,7 +387,7 @@ paths:
     get:
       tags:
         - "users"
-      summary: "Get all users"
+      summary: "[Implemented] Get all users"
       operationId: "getUsers"
       produces:
         - "application/json"
@@ -408,7 +408,7 @@ paths:
     get:
       tags:
         - "users"
-      summary: "Get user"
+      summary: "[Implemented] Get user"
       operationId: "getUser"
       produces:
         - "application/json"
@@ -432,7 +432,7 @@ paths:
     delete:
       tags:
         - "users"
-      summary: "Delete user"
+      summary: "[Implemented] Delete user"
       operationId: "deleteUser"
       produces:
         - "application/json"
@@ -455,7 +455,7 @@ paths:
     post:
       tags:
         - "users"
-      summary: "Approve user"
+      summary: "[Implemented] Approve user"
       operationId: "approveUser"
       produces:
         - "application/json"
@@ -480,7 +480,7 @@ paths:
     post:
       tags:
         - "users"
-      summary: "Reset user password"
+      summary: "[Implemented] Reset user password"
       operationId: "resetPassword"
       produces:
         - "application/json"
