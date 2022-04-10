@@ -204,9 +204,12 @@ paths:
           name: "body"
           required: true
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Item"
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: "#/definitions/Item"
       responses:
         "200":
           description: "Successful operation"
@@ -219,7 +222,7 @@ paths:
     patch:
       tags:
         - "items"
-      summary: "Update items by id in bulk (additionalProp is id in int)"
+      summary: "Update items in bulk"
       operationId: "updateItems"
       consumes:
         - "application/json"
@@ -236,16 +239,12 @@ paths:
           required: true
           schema:
             type: object
-            additionalProperties:
-              type: object
-              properties:
-                friendly_name:
-                  type: string
-                category_name:
-                  type: string
-                amount:
-                  type: integer
-              $ref: "#/definitions/Item"
+            properties:
+              items:
+                type: array
+                items:
+                  type: object
+                  $ref: "#/definitions/Item"
       responses:
         "200":
           description: "Successful operation"
@@ -321,9 +320,46 @@ paths:
           name: "body"
           required: true
           schema:
+            type: object
+            properties:
+              categories:
+                type: array
+                items:
+                  $ref: "#/definitions/Category"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
             type: array
             items:
-              $ref: "#/definitions/Category"
+              $ref: "#/definitions/CategoryResponse"
+        "405":
+          description: "Validation error"
+    patch:
+      tags:
+        - "categories"
+      summary: "Update categories in bulk"
+      operationId: "updateCategories"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          required: true
+          default: Bearer {token}
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            type: object
+            properties:
+              categories:
+                type: array
+                items:
+                  $ref: "#/definitions/CategoryResponse"
       responses:
         "200":
           description: "Successful operation"
@@ -520,9 +556,9 @@ definitions:
           - "requested"
           - "completed"
           - "discarded"
-      requester_name:
+      requesterName:
         type: string
-      requester_phone:
+      requesterPhone:
         type: string
       items:
         type: array
@@ -538,14 +574,14 @@ definitions:
     properties:
       id:
         type: integer
-      status_updated_on:
+      statusUpdatedOn:
         type: integer
-      status_updated_by:
+      statusUpdatedBy:
         type: object
         $ref: "#/definitions/UserResponse"
-      created_on:
+      createdOn:
         type: integer
-      created_by:
+      createdBy:
         type: object
         $ref: "#/definitions/UserResponse"
     allOf:
@@ -555,7 +591,7 @@ definitions:
     properties:
       name:
         type: string
-      parent_category_id:
+      parentCategoryId:
         type: integer
   CategoryResponse:
     type: object
@@ -567,7 +603,7 @@ definitions:
   Item:
     type: object
     properties:
-      friendly_name:
+      name:
         type: string
       category:
         type: integer
@@ -603,7 +639,7 @@ definitions:
     properties:
       id:
         type: integer
-      is_approved:
+      isApproved:
         type: boolean
     allOf:
       - $ref: "#/definitions/User"
