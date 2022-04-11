@@ -13,6 +13,13 @@ func CreateCategories(r *http.Request) (data map[string]interface{}, validation 
 	}, r)
 }
 
+func CreateCategory(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return Validate(govalidator.MapData{
+		"name":             []string{"required", "string"},
+		"parentCategoryID": []string{"required"},
+	}, r)
+}
+
 func validateCategories(field string, rule string, message string, valueData interface{}) error {
 	values, ok := valueData.([]interface{})
 	if !ok {
@@ -21,7 +28,6 @@ func validateCategories(field string, rule string, message string, valueData int
 	for i, value := range values {
 		category, ok := value.(map[string]interface{})
 		if !ok {
-			fmt.Println(category["name"])
 			return fmt.Errorf("%d object", i)
 		}
 		name, ok := category["name"]

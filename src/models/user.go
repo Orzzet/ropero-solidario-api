@@ -5,11 +5,11 @@ import (
 )
 
 type User struct {
-	ID         uint
-	Name       string
-	Email      string
-	Role       string
-	IsApproved bool
+	ID         uint   `json:"id" gorm:"primaryKey"`
+	Name       string `json:"name"`
+	Email      string `json:"email" gorm:"unique"`
+	Role       string `json:"role"`
+	IsApproved bool   `json:"isApproved"`
 	Password   string
 }
 

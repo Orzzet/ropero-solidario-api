@@ -1,0 +1,63 @@
+package services
+
+import (
+	"github.com/orzzet/ropero-solidario-api/src/models"
+)
+
+func (s *Service) GetItems() (items []models.Item, err error) {
+	if result := s.DB.Find(&items); result.Error != nil {
+		err = result.Error
+	}
+	return items, err
+}
+
+func (s *Service) CreateItem(data map[string]interface{}) (models.Item, error) {
+	item := models.Item{
+		Name:     data["name"].(string),
+		Category: uint(data["category"].(float64)),
+		Amount:   uint(data["amount"].(float64)),
+	}
+	if result := s.DB.Create(&item); result.Error != nil {
+		return models.Item{}, result.Error
+	}
+	return item, nil
+}
+
+func (s *Service) CreateItems(data map[string]interface{}) ([]models.Item, error) {
+	itemsData := data["items"].([]interface{})
+	for _, item := range itemsData {
+		itemData := item.(map[string]interface{})
+		item := models.Item{
+			Name:     itemData["name"].(string),
+			Category: uint(itemData["category"].(float64)),
+			Amount:   uint(itemData["amount"].(float64)),
+		}
+		if result := s.DB.Create(&item); result.Error != nil {
+			return []models.Item{}, result.Error
+		}
+	}
+	return s.GetItems()
+}
+
+func (s *Service) EditItem(ID uint, data map[string]interface{}) (item models.Item, err error) {
+	item = models.Item{
+		ID:       ID,
+		Name:     data["name"].(string),
+		Category: uint(data["category"].(float64)),
+		Amount:   uint(data["amount"].(float64)),
+	}
+	if result := s.DB.Model(&item).Update(&item); result.Error != nil {
+		return models.Item{}, result.Error
+	}
+	return
+}
+
+func (s *Service) DeleteItem(ID uint) error {
+	item := models.Item{
+		ID: ID,
+	}
+	if result := s.DB.Delete(&item).Updates(item); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

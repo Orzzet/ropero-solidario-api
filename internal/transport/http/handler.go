@@ -35,10 +35,24 @@ func (h *Handler) SetupRoutes() {
 	h.Router.Use(cors)
 	h.Router.HandleFunc("/auth", h.createToken).Methods("POST", "OPTIONS")
 
+	// Orders
+	h.Router.HandleFunc("/orders", h.getOrders).Methods("GET", "OPTIONS")
+	h.Router.HandleFunc("/orders", h.createOrder).Methods("POST", "OPTIONS")
+	h.Router.HandleFunc("/orders/{orderId}", h.getOrder).Methods("GET", "OPTIONS")
+	h.Router.HandleFunc("/orders/{orderId}", h.patchOrder).Methods("PATCH", "OPTIONS")
+
+	// Items
+	h.Router.HandleFunc("/items", h.getItems).Methods("GET", "OPTIONS")
+	h.Router.HandleFunc("/items", h.createItem).Methods("POST", "OPTIONS")
+	h.Router.HandleFunc("/items/{itemId}", h.editItem).Methods("PUT", "OPTIONS")
+	h.Router.HandleFunc("/items/{itemId}", h.deleteItem).Methods("DELETE", "OPTIONS")
+
 	// Categories
 	h.Router.HandleFunc("/categories", h.auth(h.getCategories)).Methods("GET", "OPTIONS")
+	h.Router.HandleFunc("/categories", h.getCategories).Methods("POST", "OPTIONS")
 	h.Router.HandleFunc("/categories/bulk", h.createCategories).Methods("POST", "OPTIONS")
 	h.Router.HandleFunc("/categories/{categoryId}", h.deleteCategory).Methods("DELETE", "OPTIONS")
+	h.Router.HandleFunc("/categories/{categoryId}", h.editCategory).Methods("PUT", "OPTIONS")
 
 	// Users
 	h.Router.HandleFunc("/users", h.createUser).Methods("POST", "OPTIONS")
