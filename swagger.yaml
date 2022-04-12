@@ -58,7 +58,7 @@ paths:
     post:
       tags:
       - "orders"
-      summary: "Add a new order"
+      summary: "[Implemented] [Missing items] Add a new order"
       operationId: "addOrder"
       consumes:
       - "application/json"
@@ -85,7 +85,7 @@ paths:
     get:
       tags:
         - "orders"
-      summary: "Get all orders"
+      summary: "[Implemented] [Missing items] Get all orders"
       operationId: "getOrders"
       produces:
         - "application/json"
@@ -106,7 +106,7 @@ paths:
     patch:
       tags:
         - "orders"
-      summary: "Edit an existing order"
+      summary: "[Implemented] [Missing items] Edit an existing order"
       operationId: "updateOrder"
       consumes:
         - "application/json"
@@ -138,7 +138,7 @@ paths:
     get:
       tags:
       - "orders"
-      summary: "Get order by ID"
+      summary: "[Implemented] [Missing items] Get order by ID"
       operationId: "getOrder"
       produces:
       - "application/json"
