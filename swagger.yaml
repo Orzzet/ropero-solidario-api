@@ -165,7 +165,7 @@ paths:
     get:
       tags:
         - "items"
-      summary: "Get items"
+      summary: "[Implemented] Get items"
       operationId: "getItems"
       consumes:
         - "application/json"
@@ -187,7 +187,7 @@ paths:
     post:
       tags:
         - "items"
-      summary: "Add a new item"
+      summary: "[Implemented] Add a new item"
       operationId: "createItem"
       consumes:
         - "application/json"
@@ -218,7 +218,7 @@ paths:
     put:
       tags:
         - "items"
-      summary: "Edit items in bulk"
+      summary: "[Implemented] Edit item"
       operationId: "updateItems"
       consumes:
         - "application/json"
@@ -252,7 +252,7 @@ paths:
     delete:
       tags:
         - "items"
-      summary: "Delete item"
+      summary: "[Implemented] Delete item"
       operationId: "deleteItem"
       consumes:
         - "application/json"
@@ -367,7 +367,7 @@ paths:
     post:
       tags:
         - "categories"
-      summary: "Add a new category"
+      summary: "[Implemented] Add a new category"
       operationId: "addCategory"
       consumes:
         - "application/json"
@@ -396,7 +396,7 @@ paths:
     put:
       tags:
         - "categories"
-      summary: "Edit a category"
+      summary: "[Implemented] Edit a category"
       operationId: "editCategory"
       consumes:
         - "application/json"
