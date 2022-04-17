@@ -1,7 +1,6 @@
 package models
 
 type Category struct {
-	ID               uint   `json:"id"`
-	Name             string `json:"name"`
-	ParentCategoryID uint   `json:"parentCategoryId"`
+	ID   uint   `json:"id"`
+	Name string `json:"name"`
 }

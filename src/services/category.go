@@ -13,8 +13,7 @@ func (s *Service) GetCategories() (categories []models.Category, err error) {
 
 func (s *Service) CreateCategory(data map[string]interface{}) (models.Category, error) {
 	category := models.Category{
-		Name:             data["name"].(string),
-		ParentCategoryID: uint(data["parentCategoryId"].(float64)),
+		Name: data["name"].(string),
 	}
 	if result := s.DB.Create(&category); result.Error != nil {
 		return models.Category{}, result.Error
@@ -28,8 +27,7 @@ func (s *Service) CreateCategories(data map[string]interface{}) ([]models.Catego
 	for _, category := range categoriesData {
 		categoryData := category.(map[string]interface{})
 		category := models.Category{
-			Name:             categoryData["name"].(string),
-			ParentCategoryID: uint(categoryData["parentCategoryId"].(float64)),
+			Name: categoryData["name"].(string),
 		}
 		if result := s.DB.Create(&category); result.Error != nil {
 			return []models.Category{}, result.Error
@@ -40,9 +38,8 @@ func (s *Service) CreateCategories(data map[string]interface{}) ([]models.Catego
 
 func (s *Service) EditCategory(ID uint, data map[string]interface{}) (category models.Category, err error) {
 	category = models.Category{
-		ID:               ID,
-		Name:             data["name"].(string),
-		ParentCategoryID: uint(data["parentCategoryId"].(float64)),
+		ID:   ID,
+		Name: data["name"].(string),
 	}
 	if result := s.DB.Model(&category).Update(&category); result.Error != nil {
 		return models.Category{}, result.Error
