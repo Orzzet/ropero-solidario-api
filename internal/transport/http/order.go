@@ -40,7 +40,9 @@ func (h *Handler) getOrders(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) getOrder(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	order, err := h.Service.GetOrder()
+	vars := mux.Vars(r)
+	id, err := strconv.ParseUint(vars["orderId"], 10, 32)
+	order, err := h.Service.GetOrder(uint(id))
 	if err != nil {
 		throwInternalError(w, err)
 		return

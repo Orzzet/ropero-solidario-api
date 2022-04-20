@@ -58,7 +58,7 @@ paths:
     post:
       tags:
       - "orders"
-      summary: "[Implemented] [Missing items] Add a new order"
+      summary: "[Implemented] Add a new order"
       operationId: "addOrder"
       consumes:
       - "application/json"
@@ -85,7 +85,7 @@ paths:
     get:
       tags:
         - "orders"
-      summary: "[Implemented] [Missing items] Get all orders"
+      summary: "[Implemented] Get all orders"
       operationId: "getOrders"
       produces:
         - "application/json"
@@ -106,7 +106,7 @@ paths:
     patch:
       tags:
         - "orders"
-      summary: "[Implemented] [Missing items] Edit an existing order"
+      summary: "[Implemented] Edit an existing order"
       operationId: "updateOrder"
       consumes:
         - "application/json"
@@ -138,7 +138,7 @@ paths:
     get:
       tags:
       - "orders"
-      summary: "[Implemented] [Missing items] Get order by ID"
+      summary: "[Implemented] Get order by ID"
       operationId: "getOrder"
       produces:
       - "application/json"
@@ -310,7 +310,7 @@ paths:
       tags:
         - "items"
       summary: "Edit items in bulk"
-      operationId: "updateItems"
+      operationId: "updateItem"
       consumes:
         - "application/json"
       produces:
@@ -680,7 +680,7 @@ definitions:
         type: string
       requesterPhone:
         type: string
-      items:
+      lines:
         type: array
         items:
           type: object
@@ -711,8 +711,6 @@ definitions:
     properties:
       name:
         type: string
-      parentCategoryId:
-        type: integer
   CategoryResponse:
     type: object
     properties:

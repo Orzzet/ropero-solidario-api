@@ -11,7 +11,7 @@ func CreateOrder(r *http.Request) (data map[string]interface{}, validation url.V
 		"status":         []string{"required", "string"},
 		"requesterName":  []string{"required", "string"},
 		"requesterPhone": []string{"required", "string"},
-		"items":          []string{"required"},
+		"lines":          []string{"required"},
 	}, r)
 }
 

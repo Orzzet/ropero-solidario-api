@@ -13,9 +13,9 @@ func (s *Service) GetItems() (items []models.Item, err error) {
 
 func (s *Service) CreateItem(data map[string]interface{}) (models.Item, error) {
 	item := models.Item{
-		Name:     data["name"].(string),
-		Category: uint(data["category"].(float64)),
-		Amount:   uint(data["amount"].(float64)),
+		Name:       data["name"].(string),
+		CategoryID: uint(data["category"].(float64)),
+		Amount:     uint(data["amount"].(float64)),
 	}
 	if result := s.DB.Create(&item); result.Error != nil {
 		return models.Item{}, result.Error
@@ -28,9 +28,9 @@ func (s *Service) CreateItems(data map[string]interface{}) ([]models.Item, error
 	for _, item := range itemsData {
 		itemData := item.(map[string]interface{})
 		item := models.Item{
-			Name:     itemData["name"].(string),
-			Category: uint(itemData["category"].(float64)),
-			Amount:   uint(itemData["amount"].(float64)),
+			Name:       itemData["name"].(string),
+			CategoryID: uint(itemData["category"].(float64)),
+			Amount:     uint(itemData["amount"].(float64)),
 		}
 		if result := s.DB.Create(&item); result.Error != nil {
 			return []models.Item{}, result.Error
@@ -41,10 +41,10 @@ func (s *Service) CreateItems(data map[string]interface{}) ([]models.Item, error
 
 func (s *Service) EditItem(ID uint, data map[string]interface{}) (item models.Item, err error) {
 	item = models.Item{
-		ID:       ID,
-		Name:     data["name"].(string),
-		Category: uint(data["category"].(float64)),
-		Amount:   uint(data["amount"].(float64)),
+		ID:         ID,
+		Name:       data["name"].(string),
+		CategoryID: uint(data["category"].(float64)),
+		Amount:     uint(data["amount"].(float64)),
 	}
 	if result := s.DB.Model(&item).Update(&item); result.Error != nil {
 		return models.Item{}, result.Error
