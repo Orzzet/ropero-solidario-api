@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"github.com/orzzet/ropero-solidario-api/src/services"
+	"github.com/orzzet/ropero-solidario-api/src/validators"
 	"net/http"
 )
 
@@ -14,6 +15,7 @@ type Handler struct {
 	Secret string
 	Router *mux.Router
 	*services.Service
+	*validators.Validator
 }
 
 type Response struct {
@@ -22,9 +24,11 @@ type Response struct {
 
 // NewHandler - returns a pointer to a Handler
 func NewHandler(db *gorm.DB, secret string) *Handler {
+	service := services.NewService(db)
 	return &Handler{
-		Secret:  secret,
-		Service: services.NewService(db),
+		Secret:    secret,
+		Service:   service,
+		Validator: validators.New(service),
 	}
 }
 

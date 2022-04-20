@@ -7,20 +7,19 @@ import (
 	"net/url"
 )
 
-func CreateCategories(r *http.Request) (data map[string]interface{}, validation url.Values) {
-	return Validate(govalidator.MapData{
+func (v *Validator) CreateCategories(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return validate(govalidator.MapData{
 		"categories": []string{"required", "categories"},
 	}, r)
 }
 
-func CreateCategory(r *http.Request) (data map[string]interface{}, validation url.Values) {
-	return Validate(govalidator.MapData{
-		"name":             []string{"required", "string"},
-		"parentCategoryID": []string{"required"},
+func (v *Validator) CreateCategory(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return validate(govalidator.MapData{
+		"name": []string{"required", "string"},
 	}, r)
 }
 
-func validateCategories(field string, rule string, message string, valueData interface{}) error {
+func (v *Validator) validateCategories(field string, rule string, message string, valueData interface{}) error {
 	values, ok := valueData.([]interface{})
 	if !ok {
 		return fmt.Errorf("array")
@@ -37,13 +36,18 @@ func validateCategories(field string, rule string, message string, valueData int
 		if _, ok := name.(string); !ok {
 			return fmt.Errorf("%d.name string", i)
 		}
-		parentCategoryId, ok := category["parentCategoryId"]
-		if !ok {
-			return fmt.Errorf("%d.parentCategoryId required", i)
-		}
-		if _, ok := parentCategoryId.(float64); !ok {
-			return fmt.Errorf("%d.parentCategoryId number", i)
-		}
+	}
+	return nil
+}
+
+func (v *Validator) validateCategoryExists(field string, rule string, message string, valueData interface{}) error {
+	categoryID, ok := valueData.(float64)
+	if !ok {
+		return fmt.Errorf("categoryId should be a number and its: '%s'", valueData.(string))
+	}
+
+	if _, err := v.Service.GetCategory(uint(categoryID)); err != nil {
+		return fmt.Errorf("category with id %d not found", uint(categoryID))
 	}
 	return nil
 }

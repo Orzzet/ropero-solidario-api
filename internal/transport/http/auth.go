@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/golang-jwt/jwt"
-	"github.com/orzzet/ropero-solidario-api/src/validators"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strings"
@@ -15,7 +14,7 @@ import (
 func (h *Handler) createToken(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	data, validations := validators.CreateToken(r)
+	data, validations := h.Validator.CreateToken(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return

@@ -11,6 +11,14 @@ func (s *Service) GetItems() (items []models.Item, err error) {
 	return items, err
 }
 
+func (s *Service) GetItem(ID uint) (item models.Item, err error) {
+	item.ID = ID
+	if result := s.DB.Find(&item); result.Error != nil {
+		err = result.Error
+	}
+	return item, err
+}
+
 func (s *Service) CreateItem(data map[string]interface{}) (models.Item, error) {
 	item := models.Item{
 		Name:       data["name"].(string),

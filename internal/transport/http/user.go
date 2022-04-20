@@ -4,14 +4,13 @@ import (
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/orzzet/ropero-solidario-api/src/models"
-	"github.com/orzzet/ropero-solidario-api/src/validators"
 	"net/http"
 	"strconv"
 )
 
 func (h *Handler) createUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	data, validations := validators.CreateUser(r)
+	data, validations := h.Validator.CreateUser(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return
@@ -106,7 +105,7 @@ func (h *Handler) resetUserPassword(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusForbidden)
 		w.Write([]byte("Invalid userId"))
 	}
-	data, validations := validators.ResetPassword(r)
+	data, validations := h.Validator.ResetPassword(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return

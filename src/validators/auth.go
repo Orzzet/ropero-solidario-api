@@ -6,8 +6,8 @@ import (
 	"net/url"
 )
 
-func CreateToken(r *http.Request) (data map[string]interface{}, validation url.Values) {
-	return Validate(govalidator.MapData{
+func (v *Validator) CreateToken(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return validate(govalidator.MapData{
 		"email":    []string{"required", "email"},
 		"password": []string{"required"},
 	}, r)

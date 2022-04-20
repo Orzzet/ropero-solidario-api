@@ -6,17 +6,17 @@ import (
 	"net/url"
 )
 
-func CreateUser(r *http.Request) (data map[string]interface{}, validation url.Values) {
-	return Validate(govalidator.MapData{
-		"name":     []string{"required", "alpha_space"},
+func (v *Validator) CreateUser(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return validate(govalidator.MapData{
+		"name":     []string{"required", "string"},
 		"email":    []string{"required", "email"},
 		"password": []string{"required"},
 		"role":     []string{"in:admin,superadmin"},
 	}, r)
 }
 
-func ResetPassword(r *http.Request) (data map[string]interface{}, validation url.Values) {
-	return Validate(govalidator.MapData{
+func (v *Validator) ResetPassword(r *http.Request) (data map[string]interface{}, validation url.Values) {
+	return validate(govalidator.MapData{
 		"password": []string{"required", "min:6"},
 	}, r)
 }

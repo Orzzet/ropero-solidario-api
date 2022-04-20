@@ -3,14 +3,13 @@ package http
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/orzzet/ropero-solidario-api/src/validators"
 	"net/http"
 	"strconv"
 )
 
 func (h *Handler) createCategories(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	data, validations := validators.CreateCategories(r)
+	data, validations := h.Validator.CreateCategories(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return
@@ -28,7 +27,7 @@ func (h *Handler) createCategories(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) createCategory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	data, validations := validators.CreateCategory(r)
+	data, validations := h.Validator.CreateCategory(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return
@@ -64,7 +63,7 @@ func (h *Handler) editCategory(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusForbidden)
 		w.Write([]byte("Invalid categoryId"))
 	}
-	data, validations := validators.CreateCategory(r)
+	data, validations := h.Validator.CreateCategory(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return

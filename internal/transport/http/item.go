@@ -3,14 +3,13 @@ package http
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/orzzet/ropero-solidario-api/src/validators"
 	"net/http"
 	"strconv"
 )
 
 func (h *Handler) createItem(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	data, validations := validators.CreateItem(r)
+	data, validations := h.Validator.CreateItem(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return
@@ -46,7 +45,7 @@ func (h *Handler) editItem(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusForbidden)
 		w.Write([]byte("Invalid itemId"))
 	}
-	data, validations := validators.CreateItem(r)
+	data, validations := h.Validator.CreateItem(r)
 	if validations != nil {
 		throwValidationError(w, validations)
 		return

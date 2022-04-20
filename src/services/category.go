@@ -8,7 +8,15 @@ func (s *Service) GetCategories() (categories []models.Category, err error) {
 	if result := s.DB.Find(&categories); result.Error != nil {
 		err = result.Error
 	}
-	return categories, err
+	return
+}
+
+func (s *Service) GetCategory(ID uint) (category models.Category, err error) {
+	category.ID = ID
+	if result := s.DB.Find(&category); result.Error != nil {
+		err = result.Error
+	}
+	return
 }
 
 func (s *Service) CreateCategory(data map[string]interface{}) (models.Category, error) {
