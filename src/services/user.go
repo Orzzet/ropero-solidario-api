@@ -80,3 +80,11 @@ func (s *Service) ResetPassword(ID uint, password string) (models.User, error) {
 	}
 	return user, nil
 }
+
+func (s *Service) IsUserEmailUnique(email string) bool {
+	var user = models.User{}
+	if result := s.DB.Where("email = ?", email).Find(&user); result.Error != nil {
+		return true
+	}
+	return false
+}

@@ -20,6 +20,7 @@ func New(service *services.Service) *Validator {
 	govalidator.AddCustomRule("string", validator.validateString)
 	govalidator.AddCustomRule("categoryExists", validator.validateCategoryExists)
 	govalidator.AddCustomRule("orderLines", validator.validateOrderLines)
+	govalidator.AddCustomRule("uniqueUserEmail", validator.validateUniqueUserEmail)
 	return validator
 }
 
