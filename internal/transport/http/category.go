@@ -55,6 +55,24 @@ func (h *Handler) getCategories(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *Handler) getCategory(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	vars := mux.Vars(r)
+	id, err := strconv.ParseUint(vars["categoryId"], 10, 32)
+	if err != nil {
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte("Invalid categoryId"))
+	}
+	category, err := h.Service.GetCategory(uint(id))
+	if err != nil {
+		throwNotFoundError(w, err)
+		return
+	}
+	if err := json.NewEncoder(w).Encode(category); err != nil {
+		throwInternalError(w, err)
+	}
+}
+
 func (h *Handler) editCategory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
