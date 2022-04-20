@@ -48,6 +48,7 @@ func (h *Handler) SetupRoutes() {
 	// Items
 	h.Router.HandleFunc("/items", h.getItems).Methods("GET", "OPTIONS")
 	h.Router.HandleFunc("/items", h.createItem).Methods("POST", "OPTIONS")
+	h.Router.HandleFunc("/items/{itemId}", h.getItem).Methods("GET", "OPTIONS")
 	h.Router.HandleFunc("/items/{itemId}", h.editItem).Methods("PUT", "OPTIONS")
 	h.Router.HandleFunc("/items/{itemId}", h.deleteItem).Methods("DELETE", "OPTIONS")
 

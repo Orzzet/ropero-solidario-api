@@ -15,3 +15,8 @@ func throwInternalError(w http.ResponseWriter, err error) {
 	w.WriteHeader(http.StatusInternalServerError)
 	w.Write([]byte(err.Error()))
 }
+
+func throwNotFoundError(w http.ResponseWriter, err error) {
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte(err.Error()))
+}

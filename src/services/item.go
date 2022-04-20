@@ -28,7 +28,7 @@ func (s *Service) CreateItem(data map[string]interface{}) (models.Item, error) {
 	if result := s.DB.Create(&item); result.Error != nil {
 		return models.Item{}, result.Error
 	}
-	return item, nil
+	return s.GetItem(item.ID)
 }
 
 func (s *Service) CreateItems(data map[string]interface{}) ([]models.Item, error) {
@@ -57,7 +57,7 @@ func (s *Service) EditItem(ID uint, data map[string]interface{}) (item models.It
 	if result := s.DB.Model(&item).Update(&item); result.Error != nil {
 		return models.Item{}, result.Error
 	}
-	return
+	return s.GetItem(ID)
 }
 
 func (s *Service) DeleteItem(ID uint) error {

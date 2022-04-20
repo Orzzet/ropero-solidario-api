@@ -37,6 +37,24 @@ func (h *Handler) getItems(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (h *Handler) getItem(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	vars := mux.Vars(r)
+	id, err := strconv.ParseUint(vars["itemId"], 10, 32)
+	if err != nil {
+		w.WriteHeader(http.StatusForbidden)
+		w.Write([]byte("Invalid itemId"))
+	}
+	item, err := h.Service.GetItem(uint(id))
+	if err != nil {
+		throwNotFoundError(w, err)
+		return
+	}
+	if err := json.NewEncoder(w).Encode(item); err != nil {
+		throwInternalError(w, err)
+	}
+}
+
 func (h *Handler) editItem(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	vars := mux.Vars(r)
