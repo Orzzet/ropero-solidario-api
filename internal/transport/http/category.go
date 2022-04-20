@@ -87,6 +87,11 @@ func (h *Handler) deleteCategory(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusForbidden)
 		w.Write([]byte("Invalid categoryId"))
 	}
+	validations := h.Validator.DeleteCategory(uint(id))
+	if validations != nil {
+		throwValidationError(w, validations)
+		return
+	}
 	err = h.Service.DeleteCategory(uint(id))
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)

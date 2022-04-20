@@ -62,3 +62,11 @@ func (s *Service) DeleteCategory(ID uint) error {
 	}
 	return nil
 }
+
+func (s *Service) IsCategoryInUse(ID uint) bool {
+	var item = models.Item{}
+	if result := s.DB.Where("category_id = ?", ID).Find(&item); result.Error != nil {
+		return false
+	}
+	return true
+}

@@ -19,6 +19,14 @@ func (v *Validator) CreateCategory(r *http.Request) (data map[string]interface{}
 	}, r)
 }
 
+func (v *Validator) DeleteCategory(ID uint) (validation url.Values) {
+	isInUse := v.Service.IsCategoryInUse(ID)
+	if isInUse {
+		return map[string][]string{"categoryId": []string{"in use"}}
+	}
+	return nil
+}
+
 func (v *Validator) validateCategories(field string, rule string, message string, valueData interface{}) error {
 	values, ok := valueData.([]interface{})
 	if !ok {
