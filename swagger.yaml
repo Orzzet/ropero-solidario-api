@@ -703,11 +703,6 @@ definitions:
       statusUpdatedBy:
         type: object
         $ref: "#/definitions/UserResponse"
-      createdOn:
-        type: integer
-      createdBy:
-        type: object
-        $ref: "#/definitions/UserResponse"
     allOf:
       - $ref: "#/definitions/Order"
   Category:
