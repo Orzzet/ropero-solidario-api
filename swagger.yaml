@@ -685,7 +685,11 @@ definitions:
         items:
           type: object
           properties:
-            id:
+            lineId:
+              type: integer
+            itemId:
+              type: integer
+            orderId:
               type: integer
             amount:
               type: integer
