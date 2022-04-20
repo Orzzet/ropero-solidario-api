@@ -69,3 +69,11 @@ func (s *Service) DeleteItem(ID uint) error {
 	}
 	return nil
 }
+
+func (s *Service) IsItemInUse(ID uint) bool {
+	var orderLine = models.OrderLine{}
+	if result := s.DB.Where("item_id = ?", ID).Find(&orderLine); result.Error != nil {
+		return false
+	}
+	return true
+}

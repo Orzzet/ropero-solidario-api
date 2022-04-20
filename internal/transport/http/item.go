@@ -69,6 +69,11 @@ func (h *Handler) deleteItem(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusForbidden)
 		w.Write([]byte("Invalid itemId"))
 	}
+	validations := h.Validator.DeleteItem(uint(id))
+	if validations != nil {
+		throwValidationError(w, validations)
+		return
+	}
 	err = h.Service.DeleteItem(uint(id))
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
