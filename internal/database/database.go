@@ -18,8 +18,7 @@ func NewDatabase() (db *gorm.DB, err error) {
 	}
 	env, err := godotenv.Unmarshal(s)
 	if err != nil {
-		log.Println(env)
-		log.Fatalf(err.Error())
+		log.Fatalf("Error loading.env")
 	}
 	err = os.Setenv("DB_HOST", env["DB_HOST"])
 	err = os.Setenv("DB_PORT", env["DB_PORT"])
