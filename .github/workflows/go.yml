@@ -9,7 +9,7 @@ on:
 jobs:
 
   build:
-    runs-on: ubuntu-9
+    runs-on: debian-9
     steps:
     - uses: actions/checkout@v3
 
